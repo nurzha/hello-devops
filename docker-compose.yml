@@ -1,5 +1,7 @@
 version: "2"
+
 services:
+
   hello:
     image: wishpond/hello-rb
     working_dir: /var/www
@@ -12,6 +14,14 @@ services:
       - 80:4567
     volumes:
       - ./:/var/www
+
+  postgres:
+    image: postgres:12.5
+    ports:
+      - 5432:5432
+    env_file:
+      - ./env-dev
+
   migrations:
     build: ./
     image: wishpond/hello-rb
@@ -21,9 +31,3 @@ services:
     env_file:
       - ./env-dev
     command: bash -c "rake db:migrate && rake db:seed"
-  postgres:
-    image: postgres:12.5
-    ports:
-      - 5432:5432
-    env_file:
-      - ./env-dev

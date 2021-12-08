@@ -1,5 +1,5 @@
 # TAG		wishpond/hello-rb
-FROM		ruby:2.7.1
+FROM		ruby:2.7
 
 		# Set the working directory
 WORKDIR		/var/www
@@ -10,7 +10,7 @@ RUN		bundle install && \
 		chown -R www-data:www-data /var/www
 
 		# Runtime user
-#USER		www-data
+USER		www-data
 
 		# Binding port tag
 EXPOSE		4567
