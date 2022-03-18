@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  hello:
+    image: nalpieva/hello_devops
+    command: bundle exec rackup --host 0.0.0.0 -p 4567
+    ports:
+      - 80:4567
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=hello_database
+      - POSTGRES_USER=hello_user
+      - POSTGRES_PASSWORD=hello_password
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgres:12.10
+    restart: always
+    environment:
+        POSTGRES_USER: hello_user
+        POSTGRES_PASSWORD: hello_password
+        POSTGRES_DB: hello_database
+        POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+        - "5432:5432" 
+  migrations:
+    image: nalpieva/hello_devops
+    command: "rake db:migrate && rake db:seed"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=hello_database
+      - POSTGRES_USER=hello_user
+      - POSTGRES_PASSWORD=hello_password
+    depends_on:
+      - postgres
